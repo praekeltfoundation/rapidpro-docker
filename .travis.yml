@@ -8,15 +8,14 @@ env:
   global:
     - GREP_TIMEOUT=360
     - REGISTRY_USER=rapidproautomation
+    - IMAGE="praekeltfoundation/rapidpro"
+    - REPO="praekeltfoundation/rapidpro"
     # NOTE: this is generated with `travis encrypt REGISTRY_PASS="the-password"`
     #       which is decrypted by Travis CI and set as environment variables
     - secure: "PzquUmjgdn4myZjJM7KJ7tBlZaVN9KwA/jALS0Y8dYb80Q/D2UslU+HHR3reoVAmkrEFZV0H4MA2Oaiix9a3bAfu1TR31u2ipOl9d6xTGjF50JxJ8xxFeGwFDFq7MdExVh7MpEHNhn/mLGGlkJrynZ0FRmtp/kOfDezy61g1SXBK9+GyD0JLScv7koffIkOUBXbqDoHqJ5nEBA7wG8AiywecWnCfqP4nyM03keWGqjH8GG9viRX17k33tNTKuKvVtCQDV2f/upWEastZ/aJL4KxMy/fyFaGVUULQ4/XioYkr3NdUWOyN31X//snxHxktMSfD0wb3zhkajc5KpYPucPR4IPE0krH0ps6pXv7o5qzn1WdCJTsTYLGBIzrSj24un2sXV1XzXCRKl9+1n6Tm9Y87zOPZJVCP9AHeJoXBatfi44iDJ2OS1QmKBKSSCIpiDWiyMomQqgFobCB1Pl6NGCYpdF5eFP5zuvbch/619aOrQ14poqoSsz4ysv7guRKPDjRvDU2YCr+Xs/y6kTHYvUh5s4EW9SzWnu2JolX9VcJy+dK5lHwoB1E7TSaFGjpazBF1D1nkF3IjL6x/LA2xgHhSHFKoOBTQWGcOx+DH57T/4UizHXi1zhi1xndQzvYrew4AgfLtIlSfTw9k4JIBJFNjrLgU7Vvu2FxzuwmAly8="
   matrix:
-    - IMAGE="praekeltfoundation/rapidpro" VERSION="master" REPO="praekeltfoundation/rapidpro"
+    - VERSION="$TRAVIS_COMMIT"
 
-matrix:
-  allow_failures:
-    env: VERSION="master"
 # Update Docker Engine
 before_install:
   - sudo apt-get update
@@ -26,9 +25,7 @@ before_cache:
   - docker exec --user=postgres postgresql pg_dump rapidpro > $HOME/postgresql/rapidpro.sql
 
 before_script:
-  - LATEST_TAG=$(curl -s https://api.github.com/repos/$REPO/tags  | jq -r 'map(select(.name | test("^v[0-9\\.]+$"))) | .[0].name')
-  - VERSION=${VERSION:-$LATEST_TAG}
-  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then PR_TAG="pr-$TRAVIS_PULL_REQUEST"; else PR_TAG=""; fi;
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then TAG="pr-$TRAVIS_PULL_REQUEST"; else TAG="$TRAVIS_BRANCH"; fi;
 
 script:
   # Setup postgresql and load sql dump if exists
@@ -76,6 +73,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: ./deploy.sh "${IMAGE}" "${VERSION}${PR_TAG}"
+  script: ./deploy.sh "${IMAGE}" "${TAG}"
   on:
     all_branches: true
