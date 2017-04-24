@@ -71,12 +71,13 @@ RUN cd /rapidpro && bower install --allow-root
 
 # Install `psql` command (needed for `manage.py dbshell` in stack/init_db.sql)
 # Install `libmagic` (needed since rapidpro v3.0.64)
-RUN apk add --no-cache postgresql-client libmagic
+# Install `supervisor` to run a celery queue in same container for uploads
+RUN apk add --no-cache postgresql-client libmagic supervisor
 
 ENV UWSGI_VIRTUALENV=/venv UWSGI_WSGI_FILE=temba/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=8 UWSGI_HARAKIRI=20
 # Enable HTTP 1.1 Keep Alive options for uWSGI (http-auto-chunked needed when ConditionalGetMiddleware not installed)
 # These options don't appear to be configurable via environment variables, so pass them in here instead
-ENV STARTUP_CMD="/venv/bin/uwsgi --http-auto-chunked --http-keepalive"
+ENV STARTUP_CMD="supervisord -c /etc/supervisord.conf"
 
 COPY settings.py /rapidpro/temba/
 # 500.html needed to keep the missing template from causing an exception during error handling
@@ -86,6 +87,11 @@ COPY stack/clear-compressor-cache.py /rapidpro/
 
 EXPOSE 8000
 COPY stack/startup.sh /
+
+RUN mkdir -p /etc/supervisor/conf.d/
+RUN mkdir -p /var/log/supervisor
+
+COPY supervisord.conf /etc/supervisord.conf
 
 LABEL org.label-schema.name="RapidPro" \
       org.label-schema.description="RapidPro allows organizations to visually build scalable interactive messaging applications." \
