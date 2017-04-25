@@ -91,6 +91,7 @@ COPY stack/startup.sh /
 RUN mkdir -p /etc/supervisor/conf.d/
 RUN mkdir -p /var/log/supervisor
 
+COPY supervisor_rapidpro.conf /etc/supervisor/conf.d/rapidpro.conf
 COPY supervisord.conf /etc/supervisord.conf
 
 LABEL org.label-schema.name="RapidPro" \
