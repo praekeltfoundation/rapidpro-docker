@@ -27,5 +27,4 @@ if [ "x$MANAGEPY_IMPORT_GEOJSON" = "xon" ]; then
 	echo "Imported geojson for relation_ids $OSM_RELATION_IDS"
 fi
 
-echo "=> Starting Supervisord"
 $STARTUP_CMD
