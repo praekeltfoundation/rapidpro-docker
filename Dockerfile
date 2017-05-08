@@ -76,7 +76,7 @@ RUN apk add --no-cache postgresql-client libmagic
 ENV UWSGI_VIRTUALENV=/venv UWSGI_WSGI_FILE=temba/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=8 UWSGI_HARAKIRI=20
 # Enable HTTP 1.1 Keep Alive options for uWSGI (http-auto-chunked needed when ConditionalGetMiddleware not installed)
 # These options don't appear to be configurable via environment variables, so pass them in here instead
-ENV STARTUP_CMD="/venv/bin/uwsgi --http-auto-chunked --http-keepalive"
+ENV STARTUP_CMD="/venv/bin/supervisord -c /etc/supervisor/supervisord.conf"
 
 COPY settings.py /rapidpro/temba/
 # 500.html needed to keep the missing template from causing an exception during error handling
@@ -86,6 +86,9 @@ COPY stack/clear-compressor-cache.py /rapidpro/
 
 EXPOSE 8000
 COPY stack/startup.sh /
+
+RUN mkdir -p /var/log/supervisor
+COPY supervisor /etc/supervisor
 
 LABEL org.label-schema.name="RapidPro" \
       org.label-schema.description="RapidPro allows organizations to visually build scalable interactive messaging applications." \

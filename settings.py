@@ -41,6 +41,8 @@ RAVEN_CONFIG = {
     'release': env('RAPIDPRO_VERSION'),
 }
 
+CELERY_ROUTES = {'smartmin.csv_imports.tasks.csv_import': {'queue': 'uploads'}}
+
 # -----------------------------------------------------------------------------------
 # Used when creating callbacks for Twilio, Nexmo etc..
 # -----------------------------------------------------------------------------------
