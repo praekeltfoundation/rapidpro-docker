@@ -50,7 +50,14 @@ TEMBA_HOST = env('TEMBA_HOST', HOSTNAME)
 INTERNAL_IPS = ('*',)
 ALLOWED_HOSTS = env('ALLOWED_HOSTS', HOSTNAME).split(';')
 
+LOGGING['handlers']['sentry'] = {
+    'level': 'ERROR',
+    'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+}
+
 LOGGING['root']['level'] = env('DJANGO_LOG_LEVEL', 'INFO')
+LOGGING['root']['handlers'] = ['sentry']
+
 
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', '')
 CDN_DOMAIN_NAME = env('CDN_DOMAIN_NAME', '')
