@@ -1,4 +1,5 @@
 sudo: required
+language: python
 services:
   - docker
 cache:
@@ -27,6 +28,9 @@ before_cache:
 before_script:
   - LATEST_TAG=$(curl -s https://api.github.com/repos/$REPO/tags  | jq -r '.[0].name')
   - VERSION=${VERSION:-$LATEST_TAG}
+
+install:
+  - echo "preventing default pip install here"
 
 script:
   # Setup postgresql and load sql dump if exists
@@ -72,7 +76,7 @@ after_script:
   - docker images
 
 before_deploy:
-  - pip install docker-ci-deploy==0.2.0
+  - pip install docker-ci-deploy==0.3.0
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
 deploy:
   provider: script
