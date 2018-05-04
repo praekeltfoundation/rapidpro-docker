@@ -82,6 +82,10 @@ Environment variables
   If set RapidPro will use S3 for static file storage. If not it will
   default to using whitenoise.
 
+*AWS_BUCKET_DOMAIN*
+  The domain to use for serving statics from, defaults to 
+  ``AWS_STORAGE_BUCKET_NAME`` + '.s3.amazonaws.com'
+
 *CDN_DOMAIN_NAME*
   Defaults to `''`
 
@@ -133,6 +137,9 @@ Environment variables
 
 *EMAIL_HOST*
   Defaults to ``smtp.gmail.com``
+
+*EMAIL_PORT*
+  DEfaults to ``25``
 
 *EMAIL_HOST_USER*
   Defaults to ``server@temba.io``
@@ -201,4 +208,35 @@ Environment variables
   The logo for the brand, defaults to ``/brands/rapidpro/logo.png``.
 
 *BRANDING_ALLOW_SIGNUPS*
-  Boolean for whether or not to allow signups, defaults to ``True``.
+  Set to `off` to disable, defaults to `on`
+
+*RAVEN_DSN*
+  The DSN for Sentry
+
+*EXTRA_INSTALLED_APPS*
+  Any extra apps to be appended to ``INSTALLED_APPS``.
+
+*ROOT_URLCONF*
+  The urlconf to use, defaults to ``temba.urls``.
+
+*IS_PROD*
+  If you want channel or trigger activation / deactivation
+  callbacks handled set this to ``on``.
+
+Concourse CI
+---------------------
+
+To login and sync:
+
+    > $ fly login --concourse-url https://concourse.example.com -t <target>
+    > $ fly -t <target> sync
+
+To add a pipeline:
+
+    > $ fly validate-pipeline --config .ci/pipeline.yml
+    > $ fly -t <target> set-pipeline --config .ci/pipeline.yml --pipeline <pipeline-name> --load-vars-from .ci/vars.yml
+    > $ fly -t <target> unpause-pipeline -p <pipeline-name>
+
+To trigger and watch a build:
+
+    > $ fly -t <target> trigger-job -j <pipeline-name>/build-image -w
