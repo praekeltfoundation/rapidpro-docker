@@ -41,8 +41,8 @@ script:
   - if [[ -f $HOME/postgresql/rapidpro.sql ]]; then cat $HOME/postgresql/rapidpro.sql | docker exec -i --user=postgres postgresql psql rapidpro; fi
 
   # Setup redis
-  - docker pull redis:alpine
-  - docker run -d --name redis redis:alpine
+  - docker pull redis:4.0.9-alpine
+  - docker run -d --name redis redis:4.0.9-alpine
   - timeout $GREP_TIMEOUT grep -m 1 'Ready to accept connections' <(docker logs --follow redis 2>&1)
 
   # Build RapidPro and run it
