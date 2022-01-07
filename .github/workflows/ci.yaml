@@ -31,10 +31,10 @@ jobs:
         uses: zhulik/redis-action@v1.0.0
         with:
           redis version: 5
-      - name: Update Docker Engine
-        run: |
-          sudo apt-get update
-          sudo apt-get install -qy -o Dpkg::Options::="--force-confold" docker-ce coreutils
+      # - name: Update Docker Engine
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -qy -o Dpkg::Options::="--force-confold" docker-ce coreutils
       - name: Build Rapidpro
         run: |
           docker pull rapidpro/rapidpro-base:v4
