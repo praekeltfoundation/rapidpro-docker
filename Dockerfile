@@ -65,12 +65,12 @@ ENV VIRTUAL_ENV="/venv"
 
 # Install configuration related dependencies
 RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-dev && poetry add \
-        "django-getenv==1.3.1" \
-        "django-cache-url==1.3.1" \
-        "uwsgi==2.0.14" \
-        "whitenoise==4.0" \
-        "flower==0.9.2" \
-        "tornado<6.0.0"
+        "django-getenv==1.3.2" \
+        "django-cache-url==3.2.3" \
+        "uwsgi==2.0.20" \
+        "whitenoise==5.3.0" \
+        "flower==1.0.0" \
+        "tornado==6.1"
 
 RUN cd /rapidpro && npm install npm@6.14.11 && npm install \
     && apk del .build-deps
