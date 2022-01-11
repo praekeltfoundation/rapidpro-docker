@@ -48,7 +48,8 @@ jobs:
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'Running migrations' <(docker logs --follow rapidpro 2>&1)
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'spawned uWSGI http 1' <(docker logs --follow rapidpro 2>&1)
           docker exec rapidpro /venv/bin/python /rapidpro/manage.py check
-      - name: Some outputs
+      - name: Some debug outputs
+        if: always()
         run: |
           docker logs rapidpro
           docker images
