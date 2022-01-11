@@ -11,7 +11,7 @@ ENV PIP_RETRIES=120 \
 # TODO extract openssl and tar to their own upgrade/install line
 RUN set -ex \
   && apk add --no-cache nodejs-lts npm openssl tar \
-  && npm install -g coffee-script less bower
+  && npm install -g less
 
 WORKDIR /rapidpro
 
@@ -72,7 +72,7 @@ RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-
         "flower==1.0.0" \
         "tornado==6.1"
 
-RUN cd /rapidpro && npm install npm@6.14.11 && npm install \
+RUN cd /rapidpro && npm install npm@10.18.0 && npm install \
     && apk del .build-deps
 
 # Install `psql` command (needed for `manage.py dbshell` in stack/init_db.sql)
