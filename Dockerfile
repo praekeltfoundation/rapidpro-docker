@@ -1,6 +1,6 @@
 # python:3.9-alpine with GEOS, GDAL, and Proj installed (built as a separate image
 # because it takes a long time to build)
-FROM ghcr.io/praekeltfoundation/rapidpro-base-docker:latest
+FROM ghcr.io/praekeltfoundation/rapidpro-base-docker:v6
 ENV PIP_RETRIES=120 \
     PIP_TIMEOUT=400 \
     PIP_DEFAULT_TIMEOUT=400 \
@@ -72,7 +72,7 @@ RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-
         "flower==1.0.0" \
         "tornado==6.1"
 
-RUN cd /rapidpro && npm install npm@10.18.0 && npm install \
+RUN cd /rapidpro && npm install npm@6.14.12 && npm install \
     && apk del .build-deps
 
 # Install `psql` command (needed for `manage.py dbshell` in stack/init_db.sql)
