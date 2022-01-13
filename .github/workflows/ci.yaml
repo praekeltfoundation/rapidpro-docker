@@ -10,7 +10,7 @@ jobs:
       IMAGE: praekeltfoundation/rapidpro
       REGISTRY_USER: rapidproautomation
       REPO: praekeltfoundation/rapidpro
-      GREP_TIMEOUT: 720
+      GREP_TIMEOUT: 360
     strategy:
       matrix:
         VERSION: [v6.5.71]
@@ -53,5 +53,8 @@ jobs:
         if: always()
         run: |
           docker ps
-          docker logs rapidpro
           docker images
+      - name: Rapidpro Container Logs
+        if: always()
+        run: |
+          docker logs rapidpro
