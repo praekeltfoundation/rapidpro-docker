@@ -1,4 +1,4 @@
-DATABASE_URL=postgresql://temba:temba@localhost/temba
+DATABASE_URL=postgresql://temba:temba@postgis/temba
 REDIS_URL=redis://localhost:6379/0
 SECRET_KEY=super-secret-key
 MANAGEPY_COLLECTSTATIC=on
