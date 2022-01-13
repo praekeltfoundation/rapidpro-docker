@@ -42,7 +42,7 @@ jobs:
           docker build --tag "${{ env.IMAGE }}" --build-arg RAPIDPRO_VERSION=${{ matrix.VERSION }} --build-arg RAPIDPRO_REPO=${{ env.REPO }} .
       - name: Check Rapidpro Image
         run: |
-          docker run --name rapidpro --env-file docker.envfile --publish 8000:8000 --detach "${{ env.IMAGE }}"
+          docker run --name rapidpro --env-file docker.envfile --link postgresql --publish 8000:8000 --detach "${{ env.IMAGE }}"
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'static files copied' <(docker logs --follow rapidpro 2>&1)
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'Compressing... done' <(docker logs --follow rapidpro 2>&1)
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'Running migrations' <(docker logs --follow rapidpro 2>&1)
