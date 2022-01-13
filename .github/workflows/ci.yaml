@@ -45,7 +45,6 @@ jobs:
         run: |
           docker run --name rapidpro --env-file docker.envfile --link postgis --publish 8000:8000 --detach "${{ env.IMAGE }}"
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'static files copied' <(docker logs --follow rapidpro 2>&1)
-          timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'Compressing... done' <(docker logs --follow rapidpro 2>&1)
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'Running migrations' <(docker logs --follow rapidpro 2>&1)
           timeout ${{ env.GREP_TIMEOUT }} grep -m 1 'spawned uWSGI http 1' <(docker logs --follow rapidpro 2>&1)
           docker exec rapidpro /venv/bin/python /rapidpro/manage.py check
