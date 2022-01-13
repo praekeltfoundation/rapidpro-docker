@@ -10,7 +10,7 @@ jobs:
       IMAGE: praekeltfoundation/rapidpro
       REGISTRY_USER: rapidproautomation
       REPO: praekeltfoundation/rapidpro
-      GREP_TIMEOUT: 360
+      GREP_TIMEOUT: 720
     strategy:
       matrix:
         VERSION: [v6.5.71]
