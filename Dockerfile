@@ -1,4 +1,4 @@
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye as builder
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.11-bullseye as builder
 
 ENV PIP_RETRIES=120 \
     PIP_TIMEOUT=400 \
@@ -28,14 +28,9 @@ ENV VIRTUAL_ENV="/venv"
 RUN /venv/bin/pip install --upgrade pip && pip install codecov==2.1.13
 
 # Install configuration related dependencies
-RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --without dev && poetry add \
-        "django-getenv==1.3.2" \
-        "django-cache-url==3.2.3" \
-        "uWSGI==2.0.20" \
-        "whitenoise==5.3.0" \
-        "flower==1.0.0"
+RUN pip install -r requirements.txt
 
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.11-bullseye
 
 ARG RAPIDPRO_VERSION
 ENV RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-master}
