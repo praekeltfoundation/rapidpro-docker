@@ -25,6 +25,8 @@ RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 ENV VIRTUAL_ENV="/venv"
 
+RUN /venv/bin/pip install --upgrade pip && pip install codecov==2.1.13
+
 # Install configuration related dependencies
 RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --without dev && poetry add \
         "django-getenv==1.3.2" \
