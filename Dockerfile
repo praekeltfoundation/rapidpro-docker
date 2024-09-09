@@ -29,6 +29,8 @@ ENV VIRTUAL_ENV="/venv"
 
 RUN /venv/bin/pip install --upgrade pip && pip install codecov==2.1.13
 
+RUN apt-get install build-essential python3-dev
+
 # Install configuration related dependencies
 RUN pip install -r requirements.txt
 
