@@ -7,7 +7,7 @@ ENV PIP_RETRIES=120 \
 
 RUN apt-get-install.sh wget tar build-essential
 
-COPY requirements.txt /rapidpro
+COPY requirements.txt /rapidpro/requirements.txt
 
 WORKDIR /rapidpro
 
