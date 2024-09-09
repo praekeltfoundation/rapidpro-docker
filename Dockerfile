@@ -1,11 +1,13 @@
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye as builder
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.11-bullseye as builder
 
 ENV PIP_RETRIES=120 \
     PIP_TIMEOUT=400 \
     PIP_DEFAULT_TIMEOUT=400 \
     C_FORCE_ROOT=1
 
-RUN apt-get-install.sh wget tar build-essential
+RUN apt-get-install.sh wget tar build-essential gcc
+
+COPY requirements.txt /rapidpro/requirements.txt
 
 WORKDIR /rapidpro
 
@@ -25,15 +27,12 @@ RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 ENV VIRTUAL_ENV="/venv"
 
-# Install configuration related dependencies
-RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-dev && poetry add \
-        "django-getenv==1.3.2" \
-        "django-cache-url==3.2.3" \
-        "uwsgi==2.0.20" \
-        "whitenoise==5.3.0" \
-        "flower==1.0.0"
+RUN /venv/bin/pip install --upgrade pip && pip install codecov==2.1.13
 
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye
+# Install configuration related dependencies
+RUN pip install -r requirements.txt
+
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.11-bullseye
 
 ARG RAPIDPRO_VERSION
 ENV RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-master}
