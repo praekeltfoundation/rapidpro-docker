@@ -5,7 +5,7 @@ ENV PIP_RETRIES=120 \
     PIP_DEFAULT_TIMEOUT=400 \
     C_FORCE_ROOT=1
 
-RUN apt-get-install.sh wget tar build-essential
+RUN apt-get-install.sh wget tar build-essential gcc
 
 COPY requirements.txt /rapidpro/requirements.txt
 
