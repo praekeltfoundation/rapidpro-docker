@@ -18,7 +18,7 @@ RUN echo "Downloading RapidPro ${RAPIDPRO_VERSION} from https://github.com/$RAPI
     tar -xf rapidpro.tar.gz --strip-components=1 && \
     rm rapidpro.tar.gz
 
-RUN pip install -U pip && pip install -U poetry
+RUN pip install -U pip && pip install -U poetry==1.1.15
 
 # Build Python virtualenv
 RUN python3 -m venv /venv
@@ -26,6 +26,7 @@ ENV PATH="/venv/bin:$PATH"
 ENV VIRTUAL_ENV="/venv"
 
 # Install configuration related dependencies
+RUN poetry remove codecov --dev
 RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-dev && poetry add \
         "django-getenv==1.3.2" \
         "django-cache-url==3.2.3" \
