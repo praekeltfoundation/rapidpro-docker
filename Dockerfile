@@ -26,8 +26,7 @@ ENV PATH="/venv/bin:$PATH"
 ENV VIRTUAL_ENV="/venv"
 
 # Install configuration related dependencies
-RUN poetry remove codecov --dev
-RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --no-dev && poetry add \
+RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --without dev && poetry add \
         "django-getenv==1.3.2" \
         "django-cache-url==3.2.3" \
         "uwsgi==2.0.20" \
