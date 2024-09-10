@@ -17,7 +17,7 @@ jobs:
       GREP_TIMEOUT: 360
     strategy:
       matrix:
-        VERSION: [v7.4.0]
+        VERSION: [v7.4.0, v7.4.2]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
