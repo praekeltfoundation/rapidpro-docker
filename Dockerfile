@@ -1,4 +1,4 @@
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye as builder
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.10-bullseye as builder
 
 ENV PIP_RETRIES=120 \
     PIP_TIMEOUT=400 \
@@ -33,7 +33,7 @@ RUN /venv/bin/pip install --upgrade pip && poetry install --no-interaction --wit
         "whitenoise==5.3.0" \
         "flower==1.0.0"
 
-FROM ghcr.io/praekeltfoundation/python-base-nw:3.9-bullseye
+FROM ghcr.io/praekeltfoundation/python-base-nw:3.10-bullseye
 
 ARG RAPIDPRO_VERSION
 ENV RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-master}
